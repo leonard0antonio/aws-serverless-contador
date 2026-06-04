@@ -1,5 +1,7 @@
 # 🚀 AWS Serverless: Contador de Acessos
 
+![site-preview](docs/site-preview.png)
+
 ![AWS](https://img.shields.io/badge/AWS-%23FF9900.svg?style=for-the-badge&logo=amazon-aws&logoColor=white)
 ![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
 ![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
@@ -16,7 +18,7 @@ A arquitetura foi desenhada utilizando serviços nativos da Amazon Web Services 
 * **Banco de Dados:** Amazon DynamoDB (NoSQL)
 
 ### Diagrama da Arquitetura
-![Arquitetura da Solução](docs/arquitetura.png)
+![Arquitetura da Solução](docs/arquitetura.svg)
 
 ## 3. Implementação do Back-End (Infraestrutura)
 
@@ -31,7 +33,6 @@ A lógica de incremento do contador foi centralizada em uma função Lambda util
 
 * **Desafio Técnico de Segurança (IAM):** A função foi atrelada à `LabRole` existente para garantir a comunicação segura com o DynamoDB.
 * **Desafio Técnico de Banco de Dados:** Durante o desenvolvimento, identificou-se que `total` é uma palavra reservada (*reserved keyword*) no DynamoDB. O código foi refatorado utilizando `ExpressionAttributeNames` para contornar essa limitação técnica através de aliases (`#t`).
-```
 
 ### 3.3. Roteamento e Proteção (Amazon API Gateway)
 
@@ -51,8 +52,10 @@ A interface foi construída com HTML, CSS e JavaScript puros, focando em perform
 
 Para validar a eficiência financeira da arquitetura proposta, foi gerada uma estimativa de custos projetando um cenário de alto tráfego com **100.000 acessos mensais**. O custo provisionado atesta a alta eficiência da computação sob demanda.
 
-
 *(Veja o relatório completo em PDF na pasta `/docs/estimativa-custos.pdf`)*
+
+![calculadora-print](docs/calculadora-print.png)
+
 
 ## 6. Evidências do Projeto em Produção
 
@@ -64,29 +67,3 @@ A infraestrutura encontra-se operando em nuvem e pode ser validada através dos 
 ## 7. Conclusões
 
 O projeto demonstrou com sucesso a viabilidade da utilização de arquiteturas completamente gerenciadas (Serverless). A resolução de problemas em tempo real — desde o contorno de restrições de infraestrutura como código (IaC) em laboratórios restritos até o tratamento de integração de CORS e performance no client-side — evidenciou a robustez da stack tecnológica escolhida e as melhores práticas do desenvolvimento e implantação de software em nuvem.
-
-```
-
-### Passo 3: Subindo tudo para o GitHub
-
-Se você já tem o repositório criado lá no site do GitHub, existem duas formas de subir:
-
-**Modo Rápido (Pelo Site):**
-1. Abra o seu repositório no navegador.
-2. Clique em **Add file** -> **Upload files**.
-3. Arraste e solte todos os arquivos e pastas (`docs`, `backend`, `frontend`, `README.md`) para dentro da tela.
-4. Clique no botão verde **Commit changes**.
-
-**Modo Profissional (Via Git no Terminal):**
-Se quiser fazer via linha de comando, abra o terminal dentro da pasta raiz (`aws-serverless-contador`) e rode:
-```bash
-git init
-git add .
-git commit -m "feat: adiciona arquitetura serverless de contador de acessos e documentação"
-git branch -M main
-git remote add origin SUA_URL_DO_GITHUB_AQUI
-git push -u origin main
-
-```
-
-Assim que subir, o seu `README.md` vai processar todas as imagens da pasta `/docs` e criar uma vitrine espetacular para o seu projeto!
