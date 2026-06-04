@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Em Breve - Novo Produto</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh; /* Alterado para min-height para evitar cortes em telas pequenas */
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: #ffffff;
+            padding: 1rem; /* Garante que o card nunca encoste totalmente nas bordas do celular */
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 3rem 2rem;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            width: 100%; /* Força o card a respeitar a largura da tela */
+            max-width: 400px;
+        }
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #00ffcc;
+        }
+        p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            line-height: 1.5;
+        }
+        .counter {
+            font-size: 5rem;
+            font-weight: bold;
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
+            margin-bottom: 1rem;
+        }
+
+        /* --- MÁGICA DA RESPONSIVIDADE AQUI --- */
+        @media (max-width: 480px) {
+            .container {
+                padding: 2rem 1.5rem; /* Reduz o espaçamento interno no celular */
+            }
+            h1 {
+                font-size: 1.6rem; /* Título um pouco menor */
+            }
+            p {
+                font-size: 1rem; /* Texto mais compacto */
+                margin-bottom: 1.5rem;
+            }
+            .counter {
+                font-size: 3.5rem; /* Reduz o tamanho do número para não quebrar a tela se chegar na casa dos milhares */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>🚀 Em Breve!</h1>
+        <p>Estamos preparando algo incrível. Junte-se à nossa lista de espera e seja o primeiro a saber.</p>
+        
+        <div class="counter" id="numero-acessos">...</div>
+        
+        <p>pessoas já demonstraram interesse!</p>
+    </div>
+
+    <script>
+        async function carregarAcessos() {
+            const elementoNumero = document.getElementById('numero-acessos');
+            
+            // 1. CARREGAMENTO INSTANTÂNEO (CACHE)
+            // Olha no navegador se já salvamos o número de acessos na última visita
+            const acessosSalvos = localStorage.getItem('totalAcessos');
+            if (acessosSalvos) {
+                // Se existe, mostra na tela imediatamente! O usuário não vê carregamento.
+                elementoNumero.innerText = acessosSalvos;
+            }
+
+            try {
+                // 2. BUSCA OFICIAL SILENCIOSA
+                // A URL da sua API
+                const url = 'https://ay7ecr9u15.execute-api.us-east-1.amazonaws.com/prod/contador';
+                
+                const resposta = await fetch(url);
+                const dados = await resposta.json();
+                
+                // 3. ATUALIZAÇÃO E SALVAMENTO
+                // Atualiza a tela com o número mais recente do banco de dados
+                elementoNumero.innerText = dados.total;
+                
+                // Salva esse novo número no navegador para a próxima vez que ele abrir a página
+                localStorage.setItem('totalAcessos', dados.total);
+                
+            } catch (erro) {
+                console.error('Erro ao buscar o contador:', erro);
+                // Só mostra "Erro" se a API falhar E não tivermos nada no cache para mostrar
+                if (!acessosSalvos) {
+                    elementoNumero.innerText = 'Erro';
+                }
+            }
+        }
+
+        // Executa a função assim que a página abre
+        carregarAcessos();
+    </script>
+
+</body>
+</html>
