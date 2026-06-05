@@ -1,0 +1,42 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Arquitetura Serverless do Contador de Acessos
+
+Resources:
+  # 1. O Banco de Dados
+  TabelaContador:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: TabelaContador
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+
+  # 2. O Cérebro (Lambda) e a Porta de Entrada (API Gateway)
+  FuncaoContador:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: FuncaoContador
+      Runtime: nodejs20.x
+      Handler: index.handler
+      CodeUri: ./backend/
+      MemorySize: 128
+      Timeout: 3
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref TabelaContador
+      Policies:
+        # Dá permissão para o Lambda escrever no DynamoDB
+        - DynamoDBCrudPolicy:
+            TableName: !Ref TabelaContador
+      Events:
+        # Cria a Rota no API Gateway automaticamente
+        ApiContador:
+          Type: Api
+          Properties:
+            Path: /contador
+            Method: get

@@ -1,10 +1,12 @@
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocumentClient, UpdateCommand } from "@aws-sdk/lib-dynamodb";
 
+// Configuramos o cliente do DynamoDB e o nome da tabela a partir das variáveis de ambiente
 const client = new DynamoDBClient({});
 const dynamo = DynamoDBDocumentClient.from(client);
 const TABLE_NAME = process.env.TABLE_NAME;
 
+// A função handler é o ponto de entrada da nossa Lambda. Ela será chamada toda vez que a função for invocada.
 export const handler = async (event) => {
   const command = new UpdateCommand({
     TableName: TABLE_NAME,
@@ -19,8 +21,10 @@ export const handler = async (event) => {
     ReturnValues: 'UPDATED_NEW'
   });
 
+  // Enviamos o comando para o DynamoDB e aguardamos a resposta
   const result = await dynamo.send(command);
 
+  // Retornamos a resposta para o front-end, incluindo o novo valor do contador
   return {
     statusCode: 200,
     headers: {
