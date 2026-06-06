@@ -72,6 +72,8 @@ A infraestrutura encontra-se operando em nuvem e pode ser validada através dos 
 * **Interface Gráfica (S3):** [http://meu-contador-em-breve-2026.s3-website-us-east-1.amazonaws.com](http://meu-contador-em-breve-2026.s3-website-us-east-1.amazonaws.com)
 * **Endpoint da API REST:** `https://ay7ecr9u15.execute-api.us-east-1.amazonaws.com/prod/contador`
 
+> ⚠️ **Aviso de Navegação:** Como a interface estática está hospedada diretamente no Amazon S3 (sem uma CDN/CloudFront intermediando), o endpoint nativo utiliza o protocolo HTTP padrão. Alguns navegadores modernos, especialmente em dispositivos móveis, tentam forçar o redirecionamento automático para `https://`, o que pode causar um erro de "Conexão Redefinida". Caso não consiga abrir a página, verifique a barra de endereços e garanta que a URL inicie explicitamente com `http://` (sem o "s").
+
 ## 7. Conclusões
 
 O projeto demonstrou com sucesso a viabilidade da utilização de arquiteturas completamente gerenciadas (Serverless). A resolução de problemas em tempo real — desde o contorno de restrições de infraestrutura como código (IaC) em laboratórios restritos até o tratamento de integração de CORS e performance no client-side — evidenciou a robustez da stack tecnológica escolhida e as melhores práticas do desenvolvimento e implantação de software em nuvem.
