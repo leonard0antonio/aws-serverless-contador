@@ -60,14 +60,14 @@ A interface foi construída com HTML, CSS e JavaScript puros, focando em perform
 
 Para validar a eficiência financeira da arquitetura proposta, foi gerada uma estimativa de custos projetando um cenário de alto tráfego com **100.000 acessos mensais**. O custo provisionado atesta a alta eficiência da computação sob demanda.
 
-*(Veja o relatório completo em PDF na pasta `/docs/estimativa-custos.pdf`)*
+*(Veja o relatório completo em PDF na pasta `/docs/estimativa-custos.pdf` ([estimativa-custos.pdf](docs/estimativa-custos.pdf))*
 
 ![calculadora-print](docs/calculadora-print.png)
 
 
 ## 6. Evidências do Projeto em Produção
 
-A infraestrutura encontra-se operando em nuvem(Quando Meu lab da AWS estiver Ativo) e pode ser validada através dos seguintes endpoints:
+A infraestrutura encontra-se operando em nuvem e pode ser validada através dos seguintes endpoints:
 
 * **Interface Gráfica (S3):** [http://meu-contador-em-breve-2026.s3-website-us-east-1.amazonaws.com](http://meu-contador-em-breve-2026.s3-website-us-east-1.amazonaws.com)
 * **Endpoint da API REST:** `https://ay7ecr9u15.execute-api.us-east-1.amazonaws.com/prod/contador`
