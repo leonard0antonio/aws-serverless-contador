@@ -40,7 +40,7 @@ Foi criada uma tabela focada em alta performance de leitura e gravação:
 A lógica de incremento do contador foi centralizada em uma função Lambda utilizando Node.js.
 
 * **Desafio Técnico de Segurança (IAM):** A função foi atrelada à `LabRole` existente para garantir a comunicação segura com o DynamoDB.
-* **Desafio Técnico de Banco de Dados:** Durante o desenvolvimento, identificou-se que `total` é uma palavra reservada (*reserved keyword*) no DynamoDB. O código foi refatorado utilizando `ExpressionAttributeNames` para contornar essa limitação técnica através de aliases (`#t`).
+* **Otimização de Custos e Integridade (Cache em Memória):** Para evitar que usuários inflassem o contador artificialmente ao atualizar a página várias vezes (F5), foi implementado um mecanismo de cache na memória RAM do container do Lambda utilizando um objeto `Set()`. O código captura o IP do visitante via API Gateway e bloqueia gravações redundantes no DynamoDB durante o tempo de vida do container (*Warm Start*), retornando apenas o valor de leitura.
 
 ### 3.3. Roteamento e Proteção (Amazon API Gateway)
 
@@ -58,22 +58,31 @@ A interface foi construída com HTML, CSS e JavaScript puros, focando em perform
 
 ## 5. Estimativa de Custos e Viabilidade Comercial
 
-Para validar a eficiência financeira da arquitetura proposta, foi gerada uma estimativa de custos projetando um cenário de alto tráfego com **100.000 acessos mensais**. O custo provisionado atesta a alta eficiência da computação sob demanda.
+Para validar a eficiência financeira da arquitetura proposta, foi gerada uma estimativa de custos projetando um cenário de alto tráfego com **100.000 acessos mensais**, provisionando os serviços base e camadas adicionais de segurança (AWS WAF) e observabilidade (CloudWatch Logs). O custo provisionado atesta a altíssima eficiência da computação sob demanda.
 
-*(Veja o relatório completo em PDF na pasta `/docs/estimativa-custos.pdf` ([estimativa-custos.pdf](docs/estimativa-custos.pdf))*
-
-![calculadora-print](docs/calculadora-print.png)
-
+*(Veja o relatório completo em PDF na pasta `/docs/estimativa-custos.pdf` ([estimativa-custos.pdf](https://www.google.com/search?q=docs/estimativa-custos.pdf))*
 
 ## 6. Evidências do Projeto em Produção
 
 A infraestrutura encontra-se operando em nuvem e pode ser validada através dos seguintes endpoints:
 
-* **Interface Gráfica (S3):** [http://meu-contador-em-breve-2026.s3-website-us-east-1.amazonaws.com](http://meu-contador-em-breve-2026.s3-website-us-east-1.amazonaws.com)
+* **Interface Gráfica (S3):** [https://meu-contador-em-breve-2026.s3.us-east-1.amazonaws.com/index.html](https://meu-contador-em-breve-2026.s3.us-east-1.amazonaws.com/index.html)
 * **Endpoint da API REST:** `https://ay7ecr9u15.execute-api.us-east-1.amazonaws.com/prod/contador`
 
-> ⚠️ **Aviso de Navegação:** Como a interface estática está hospedada diretamente no Amazon S3 (sem uma CDN/CloudFront intermediando), o endpoint nativo utiliza o protocolo HTTP padrão. Alguns navegadores modernos, especialmente em dispositivos móveis, tentam forçar o redirecionamento automático para `https://`, o que pode causar um erro de "Conexão Redefinida". Caso não consiga abrir a página, verifique a barra de endereços e garanta que a URL inicie explicitamente com `http://` (sem o "s").
 
-## 7. Conclusões
+### 🔒 Nota sobre Segurança e HTTPS
 
-O projeto demonstrou com sucesso a viabilidade da utilização de arquiteturas completamente gerenciadas (Serverless). A resolução de problemas em tempo real — desde o contorno de restrições de infraestrutura como código (IaC) em laboratórios restritos até o tratamento de integração de CORS e performance no client-side — evidenciou a robustez da stack tecnológica escolhida e as melhores práticas do desenvolvimento e implantação de software em nuvem.
+Devido às restrições de permissão do ambiente de laboratório, o deploy do **Amazon CloudFront** (CDN) não pôde ser provisionado para injetar o certificado SSL/TLS no domínio padrão. Para contornar essa limitação e permitir testes em dispositivos que exigem conexões seguras, a aplicação também pode ser acessada diretamente pelo REST API Endpoint do S3, que provê HTTPS nativo:
+
+* **Endpoint Seguro Alternativo:** `https://meu-contador-em-breve-2026.s3.us-east-1.amazonaws.com/index.html`
+
+## 7. Práticas de DevOps e Infraestrutura como Código (IaC)
+
+Visando a automação e esteira de entrega contínua, o repositório conta com:
+
+* `deploy.sh`: Script Shell para sincronização automatizada dos ativos estáticos no Amazon S3 via AWS CLI.
+* `template.yml`: Documentação da infraestrutura em formato AWS SAM/CloudFormation, servindo de base para o provisionamento via IaC.
+
+## 8. Conclusões
+
+O projeto demonstrou com sucesso a viabilidade da utilização de arquiteturas completamente gerenciadas (Serverless). A resolução de problemas em tempo real — desde o contorno de restrições de infraestrutura como código (IaC) em laboratórios restritos até o tratamento de integração de CORS, proteção de banco de dados no back-end e performance no client-side — evidenciou a robustez da stack tecnológica escolhida e as melhores práticas do desenvolvimento e implantação de software em nuvem.
