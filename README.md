@@ -62,6 +62,8 @@ Para validar a eficiência financeira da arquitetura proposta, foi gerada uma es
 
 *(Veja o relatório completo em PDF na pasta `/docs/estimativa-custos.pdf` ([estimativa-custos.pdf](https://www.google.com/search?q=docs/estimativa-custos.pdf))*
 
+![calculadora-print](docs/calculadora-print.png)
+
 ## 6. Evidências do Projeto em Produção
 
 A infraestrutura encontra-se operando em nuvem e pode ser validada através dos seguintes endpoints:
