@@ -60,7 +60,7 @@ A interface foi construída com HTML, CSS e JavaScript puros, focando em perform
 
 Para validar a eficiência financeira da arquitetura proposta, foi gerada uma estimativa de custos projetando um cenário de alto tráfego com **100.000 acessos mensais**, provisionando os serviços base e camadas adicionais de segurança (AWS WAF) e observabilidade (CloudWatch Logs). O custo provisionado atesta a altíssima eficiência da computação sob demanda.
 
-*(Veja o relatório completo em PDF na pasta `/docs/estimativa-custos.pdf` ([estimativa-custos.pdf](https://www.google.com/search?q=docs/estimativa-custos.pdf))*
+*(Veja o relatório completo em PDF na pasta `/docs/estimativa-custos.pdf` ([estimativa-custos.pdf](docs/estimativa-custos.pdf))*
 
 ![calculadora-print](docs/calculadora-print.png)
 
@@ -70,13 +70,6 @@ A infraestrutura encontra-se operando em nuvem e pode ser validada através dos 
 
 * **Interface Gráfica (S3):** [https://meu-contador-em-breve-2026.s3.us-east-1.amazonaws.com/index.html](https://meu-contador-em-breve-2026.s3.us-east-1.amazonaws.com/index.html)
 * **Endpoint da API REST:** `https://ay7ecr9u15.execute-api.us-east-1.amazonaws.com/prod/contador`
-
-
-### 🔒 Nota sobre Segurança e HTTPS
-
-Devido às restrições de permissão do ambiente de laboratório, o deploy do **Amazon CloudFront** (CDN) não pôde ser provisionado para injetar o certificado SSL/TLS no domínio padrão. Para contornar essa limitação e permitir testes em dispositivos que exigem conexões seguras, a aplicação também pode ser acessada diretamente pelo REST API Endpoint do S3, que provê HTTPS nativo:
-
-* **Endpoint Seguro Alternativo:** `https://meu-contador-em-breve-2026.s3.us-east-1.amazonaws.com/index.html`
 
 ## 7. Práticas de DevOps e Infraestrutura como Código (IaC)
 
